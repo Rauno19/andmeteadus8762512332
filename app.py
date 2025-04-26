@@ -59,6 +59,15 @@ year = st.selectbox("Vali aasta", sorted(df["Aasta"].unique()))
 df_year = get_data_for_year(df, year)
 
 merged_data = gdf.merge(df_year, left_on='MNIMI', right_on='Maakond')
+<<<<<<< HEAD
+=======
+
+if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in merged_data.columns:
+    merged_data["Loomulik iive"] = merged_data["Mehed Loomulik iive"] + merged_data["Naised Loomulik iive"]
+    plot(merged_data, year)
+else:
+    st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")
+>>>>>>> 03362a7e46e521740d9ca5dd6c17c95e5e511b25
 
 if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in merged_data.columns:
     merged_data["Loomulik iive"] = merged_data["Mehed Loomulik iive"] + merged_data["Naised Loomulik iive"]

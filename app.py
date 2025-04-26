@@ -13,7 +13,7 @@ geojson = "maakonnad.geojson"
 JSON_PAYLOAD_STR = """{
   "query": [
     {"code": "Aasta", "selection": {"filter": "item", "values": ["2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023"]}},
-    {"code": "Maakond", "selection": {"filter": "item", "values": ["39", "44", "49", "51", "57", "59", "65", "67", "70", "74", "78", "82", "84", "86"]}},
+    {"code": "Maakond", "selection": {"filter": "item", "values": ["37", "39", "44", "49", "51", "57", "59", "65", "67", "70", "74", "78", "82", "84", "86"]}},
     {"code": "Sugu", "selection": {"filter": "item", "values": ["2", "3"]}}
   ],
   "response": {"format": "csv"}
@@ -99,4 +99,3 @@ else:
     st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")
 
 st.caption("Andmeallikas: Statistikaamet")
-

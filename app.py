@@ -62,6 +62,10 @@ merged_data = gdf.merge(df_year, left_on='MNIMI', right_on='Maakond')
 
 if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in merged_data.columns:
     merged_data["Loomulik iive"] = merged_data["Mehed Loomulik iive"] + merged_data["Naised Loomulik iive"]
+    
+    st.subheader("Andmetabel valitud aasta kohta")
+    st.dataframe(merged_data[["MNIMI", "Loomulik iive"]])
+    
     plot(merged_data, year)
 else:
     st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")

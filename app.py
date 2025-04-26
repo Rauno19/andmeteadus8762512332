@@ -40,10 +40,13 @@ def get_data_for_year(df, year):
     year_data = df[df.Aasta == year]
     return year_data
 
-def plot(merged_data, year):
+def plot(merged_data, year, selected_region=None):
     fig, ax = plt.subplots(figsize=(12, 8))
+    if selected_region:
+        merged_data = merged_data[merged_data["MNIMI"] == selected_region]
     merged_data.plot(column='Loomulik iive', ax=ax, legend=True, cmap='viridis', legend_kwds={'label': "Loomulik iive"})
-    plt.title(f'Loomulik iive maakonniti aastal {year}')
+    title = f'Loomulik iive {"maakonnas " + selected_region if selected_region else "maakonniti"} aastal {year}'
+    plt.title(title)
     plt.axis('off')
     st.pyplot(fig)
 
@@ -62,11 +65,17 @@ merged_data = gdf.merge(df_year, left_on='MNIMI', right_on='Maakond')
 
 if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in merged_data.columns:
     merged_data["Loomulik iive"] = merged_data["Mehed Loomulik iive"] + merged_data["Naised Loomulik iive"]
-    
+
     st.subheader("Andmetabel valitud aasta kohta")
     st.dataframe(merged_data[["MNIMI", "Loomulik iive"]])
-    
-    plot(merged_data, year)
+
+    region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())
+    selected_region = st.selectbox("Vali maakond", region_options)
+
+    if selected_region == "Kõik maakonnad":
+        plot(merged_data, year)
+    else:
+        plot(merged_data, year, selected_region)
 else:
     st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")
 

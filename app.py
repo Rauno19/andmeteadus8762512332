@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 STATISTIKAAMETI_API_URL = "https://andmed.stat.ee/api/v1/et/stat/RV032"
 
-geojson = "maakonnad.geojson"  # Fail peab olema sinu GitHub repos
+geojson = "maakonnad.geojson"
 
 JSON_PAYLOAD_STR = """{
   "query": [
@@ -33,33 +33,37 @@ def import_data():
 
 def import_geojson():
     gdf = gpd.read_file(geojson)
+    gdf["MNIMI"] = gdf["MNIMI"].str.replace(" maakond", "", regex=False)
     return gdf
 
 def get_data_for_year(df, year):
     year_data = df[df.Aasta == year]
     return year_data
 
-def plot(gdf, df_year):
-    merged = gdf.merge(df_year, how="left", left_on="MNIMI", right_on="Maakond")
+def plot(merged_data, year):
     fig, ax = plt.subplots(figsize=(12, 8))
-    merged.plot(column='Loomulik iive', ax=ax, legend=True, cmap='viridis', legend_kwds={'label': "Loomulik iive"})
-    plt.title('Loomulik iive maakonniti')
+    merged_data.plot(column='Loomulik iive', ax=ax, legend=True, cmap='viridis', legend_kwds={'label': "Loomulik iive"})
+    plt.title(f'Loomulik iive maakonniti aastal {year}')
     plt.axis('off')
     st.pyplot(fig)
 
-# Streamlit rakenduse algus
 st.title("Loomulik iive Eesti maakondades (2014-2023)")
 
-# Andmete laadimine
 with st.spinner("Laen andmeid..."):
     df = import_data()
     gdf = import_geojson()
 
-# Kasutaja valik
-year = st.selectbox("Vali aasta", sorted(df.Aasta.unique()))
+st.success("Andmed edukalt laetud!")
+
+year = st.selectbox("Vali aasta", sorted(df["Aasta"].unique()))
 df_year = get_data_for_year(df, year)
 
-# Kaardi kuvamine
-plot(gdf, df_year)
+merged_data = gdf.merge(df_year, left_on='MNIMI', right_on='Maakond')
+
+if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in merged_data.columns:
+    merged_data["Loomulik iive"] = merged_data["Mehed Loomulik iive"] + merged_data["Naised Loomulik iive"]
+    plot(merged_data, year)
+else:
+    st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")
 
 st.caption("Andmeallikas: Statistikaamet")

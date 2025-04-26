@@ -80,6 +80,9 @@ st.success("Andmed edukalt laetud!")
 year = st.selectbox("Vali aasta", sorted(df["Aasta"].unique()))
 df_year = get_data_for_year(df, year)
 
+# PARANDUS: puhasta Maakonna nimed API andmetes
+df_year["Maakond"] = df_year["Maakond"].str.replace(" maakond", "", regex=False)
+
 merged_data = gdf.merge(df_year, left_on='MNIMI', right_on='Maakond')
 
 if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in merged_data.columns:
@@ -96,3 +99,4 @@ else:
     st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")
 
 st.caption("Andmeallikas: Statistikaamet")
+

@@ -115,7 +115,7 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
     selected_region = st.selectbox("Vali maakond", region_options)
 
     cmap_choice = st.selectbox("Vali kaardi värviskeem", ["viridis", "plasma"], index=1)
-            plot(merged_data, year, selected_region, cmap_choice=cmap_choice)
+    plot(merged_data, year, selected_region, cmap_choice=cmap_choice)
 else:
     st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")
 

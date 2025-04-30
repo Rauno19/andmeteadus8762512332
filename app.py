@@ -53,7 +53,7 @@ def plot(merged_data, year, selected_region=None):
         column='Loomulik iive', 
         ax=ax, 
         legend=True, 
-        cmap='viridis', 
+        cmap='plasma', 
         legend_kwds={'label': "Loomulik iive"}
     )
 

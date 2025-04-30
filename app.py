@@ -94,7 +94,8 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
         .rename(columns={"MNIMI": "Maakond"})
         .sort_values("Maakond")
         .reset_index(drop=True)
-        .rename_axis(index=lambda x: x + 1)
+        .rename(lambda x: x + 1)
+        .style.set_table_styles([{'selector': 'th', 'props': [('text-align', 'left')]}])
     )
 
     region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())

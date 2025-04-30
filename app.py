@@ -104,11 +104,12 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
             .style.set_table_styles([{'selector': 'th', 'props': [('text-align', 'left')]}])
         )
     with col2:
-        .sort_values("Maakond")
-        .reset_index(drop=True)
-        .rename(lambda x: x + 1)
-        .style.set_table_styles([{'selector': 'th', 'props': [('text-align', 'left')]}])
-    )
+        region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())
+        selected_region = st.selectbox("Vali maakond", region_options)
+
+        cmap_choice = st.selectbox("Vali kaardi värviskeem", ["viridis", "plasma"], index=1)
+
+        plot(merged_data, year, selected_region, cmap_choice=cmap_choice)
 
     region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())
     selected_region = st.selectbox("Vali maakond", region_options)

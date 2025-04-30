@@ -92,10 +92,18 @@ merged_data = gdf.merge(df_year, left_on='MNIMI', right_on='Maakond')
 if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in merged_data.columns:
     merged_data["Loomulik iive"] = merged_data["Mehed Loomulik iive"] + merged_data["Naised Loomulik iive"]
 
-    st.subheader("Andmetabel valitud aasta kohta")
-    st.dataframe(
-        merged_data[["MNIMI", "Loomulik iive"]]
-        .rename(columns={"MNIMI": "Maakond"})
+    st.subheader("Andmetabel ja kaart")
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        st.dataframe(
+            merged_data[["MNIMI", "Loomulik iive"]]
+            .rename(columns={"MNIMI": "Maakond"})
+            .sort_values("Maakond")
+            .reset_index(drop=True)
+            .rename(lambda x: x + 1)
+            .style.set_table_styles([{'selector': 'th', 'props': [('text-align', 'left')]}])
+        )
+    with col2:
         .sort_values("Maakond")
         .reset_index(drop=True)
         .rename(lambda x: x + 1)
@@ -106,7 +114,7 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
     selected_region = st.selectbox("Vali maakond", region_options)
 
     cmap_choice = st.selectbox("Vali kaardi värviskeem", ["viridis", "plasma"], index=1)
-    plot(merged_data, year, selected_region, cmap_choice=cmap_choice)
+            plot(merged_data, year, selected_region, cmap_choice=cmap_choice)
 else:
     st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")
 

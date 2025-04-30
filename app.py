@@ -42,6 +42,8 @@ def get_data_for_year(df, year):
 
 def plot(merged_data, year, selected_region=None, cmap_choice='plasma'):
     fig, ax = plt.subplots(figsize=(12, 8))
+    vmin = merged_data['Loomulik iive'].min()
+    vmax = merged_data['Loomulik iive'].max()
     if selected_region and selected_region != "Kõik maakonnad":
         merged_data = merged_data[merged_data["MNIMI"] == selected_region]
 
@@ -50,6 +52,12 @@ def plot(merged_data, year, selected_region=None, cmap_choice='plasma'):
         return
 
     merged_data.plot(
+        column='Loomulik iive', 
+        ax=ax, 
+        legend=True, 
+        cmap=cmap_choice,
+        vmin=vmin,
+        vmax=vmax,
         column='Loomulik iive', 
         ax=ax, 
         legend=True, 

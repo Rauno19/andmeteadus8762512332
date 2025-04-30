@@ -89,7 +89,13 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
     merged_data["Loomulik iive"] = merged_data["Mehed Loomulik iive"] + merged_data["Naised Loomulik iive"]
 
     st.subheader("Andmetabel valitud aasta kohta")
-    st.dataframe(merged_data[["MNIMI", "Loomulik iive"]].rename(columns={"MNIMI": "Maakond"}))
+    st.dataframe(
+        merged_data[["MNIMI", "Loomulik iive"]]
+        .rename(columns={"MNIMI": "Maakond"})
+        .sort_values("Maakond")
+        .reset_index(drop=True)
+        .rename_axis(index=lambda x: x + 1)
+    )
 
     region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())
     selected_region = st.selectbox("Vali maakond", region_options)

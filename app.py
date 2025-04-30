@@ -40,7 +40,7 @@ def get_data_for_year(df, year):
     year_data = df[df.Aasta == year]
     return year_data
 
-def plot(merged_data, year, selected_region=None):
+def plot(merged_data, year, selected_region=None, cmap_choice='plasma'):
     fig, ax = plt.subplots(figsize=(12, 8))
     if selected_region and selected_region != "Kõik maakonnad":
         merged_data = merged_data[merged_data["MNIMI"] == selected_region]
@@ -50,6 +50,10 @@ def plot(merged_data, year, selected_region=None):
         return
 
     merged_data.plot(
+        column='Loomulik iive', 
+        ax=ax, 
+        legend=True, 
+        cmap=cmap_choice, 
         column='Loomulik iive', 
         ax=ax, 
         legend=True, 
@@ -101,7 +105,8 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
     region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())
     selected_region = st.selectbox("Vali maakond", region_options)
 
-    plot(merged_data, year, selected_region)
+    cmap_choice = st.selectbox("Vali kaardi värviskeem", ["viridis", "plasma"], index=1)
+    plot(merged_data, year, selected_region, cmap_choice=cmap_choice)
 else:
     st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")
 

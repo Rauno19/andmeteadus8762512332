@@ -40,7 +40,7 @@ def get_data_for_year(df, year):
     year_data = df[df.Aasta == year]
     return year_data
 
-def plot(merged_data, year, selected_region=None, cmap_choice='magma', gender_label="Kokku"):
+def plot(merged_data, year, selected_region=None, cmap_choice='plasma', gender_label="Kokku"):
     fig, ax = plt.subplots(figsize=(12, 8))
     vmin = merged_data['Loomulik iive'].min()
     vmax = merged_data['Loomulik iive'].max()
@@ -114,7 +114,7 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
         region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())
         selected_region = st.selectbox("Vali maakond", region_options, key="region_select")
 
-        cmap_choice = st.selectbox("Vali kaardi värviskeem", ["Viridis", "Magma"], index=1, key="cmap_select")
+        cmap_choice = st.selectbox("Vali kaardi värviskeem", ["Viridis", "Plasma"], index=1, key="cmap_select")
 
         plot(merged_data, year, selected_region, cmap_choice=cmap_choice, gender_label=gender_option)
 

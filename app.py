@@ -99,14 +99,14 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
     else:
         merged_data["Loomulik iive"] = merged_data["Naised Loomulik iive"]
 
-    st.subheader("Andmetabel ja kaart")
-    col1, col2 = st.columns([1, 2])
+    region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())
+selected_region = st.selectbox("Vali maakond", region_options, key="region_select")
+
+cmap_choice = st.selectbox("Vali kaardi värviskeem", ["viridis", "plasma"], index=1, key="cmap_select")
+
+st.subheader("Andmetabel ja kaart")
+col1, col2 = st.columns([1, 2])
     with col2:
-        region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())
-        selected_region = st.selectbox("Vali maakond", region_options, key="region_select")
-
-        cmap_choice = st.selectbox("Vali kaardi värviskeem", ["viridis", "plasma"], index=1, key="cmap_select")
-
         plot(merged_data, year, selected_region, cmap_choice=cmap_choice, gender_label=gender_option)
 
     with col1:

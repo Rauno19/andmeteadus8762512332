@@ -106,19 +106,14 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
 
     cmap_choice = st.selectbox("Vali kaardi värviskeem", ["viridis", "plasma"], index=1, key="cmap_select")
 
-    st.subheader("Andmetabel ja kaart")
     col1, col2 = st.columns([1, 2])
-    with col1:
-        st.dataframe(
-            merged_data[["MNIMI", "Loomulik iive"]]
-            .rename(columns={"MNIMI": "Maakond"})
-            .sort_values("Maakond")
-            .reset_index(drop=True)
-            .rename(lambda x: x + 1)
-            .style.set_table_styles([{'selector': 'th', 'props': [('text-align', 'left')]}])
-        )
-    with col2:
-        plot(merged_data, year, selected_region, cmap_choice=cmap_choice, gender_label=gender_option)
+with col2:
+            plot(merged_data, year, selected_region, cmap_choice=cmap_choice, gender_label=gender_option)
+
+if selected_region != "Kõik maakonnad":
+    valitud_rida = merged_data[merged_data["MNIMI"] == selected_region][["MNIMI", "Loomulik iive"]]
+    if not valitud_rida.empty:
+        st.metric(label=f"{valitud_rida.iloc[0, 0]} — Loomulik iive ({gender_option.lower()})", value=int(valitud_rida.iloc[0, 1]))
 
 else:
     st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")

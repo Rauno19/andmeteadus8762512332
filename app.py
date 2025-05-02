@@ -90,7 +90,14 @@ df_year["Maakond"] = df_year["Maakond"].str.replace(" maakond", "", regex=False)
 merged_data = gdf.merge(df_year, left_on='MNIMI', right_on='Maakond')
 
 if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in merged_data.columns:
-    merged_data["Loomulik iive"] = merged_data["Mehed Loomulik iive"] + merged_data["Naised Loomulik iive"]
+    gender_option = st.selectbox("Vali sugu", ["Kokku", "Mehed", "Naised"], key="gender_select")
+
+    if gender_option == "Kokku":
+        merged_data["Loomulik iive"] = merged_data["Mehed Loomulik iive"] + merged_data["Naised Loomulik iive"]
+    elif gender_option == "Mehed":
+        merged_data["Loomulik iive"] = merged_data["Mehed Loomulik iive"]
+    else:
+        merged_data["Loomulik iive"] = merged_data["Naised Loomulik iive"]
 
     st.subheader("Andmetabel ja kaart")
     col1, col2 = st.columns([1, 2])

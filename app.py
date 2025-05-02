@@ -73,7 +73,7 @@ def plot(merged_data, year, selected_region=None, cmap_choice='plasma', gender_l
 
     st.pyplot(fig)
 
-st.title("Loomulik iive Eesti maakondades aastatel 2014-2023")
+st.title("Loomulik iive Eesti maakondades (2014-2023)")
 
 with st.spinner("Laen andmeid..."):
     df = import_data()
@@ -102,14 +102,19 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
     st.subheader("Andmetabel ja kaart")
     col1, col2 = st.columns([1, 2])
     with col1:
-        st.dataframe(
-            merged_data[["MNIMI", "Loomulik iive"]]
-            .rename(columns={"MNIMI": "Maakond"})
-            .sort_values("Maakond")
-            .reset_index(drop=True)
-            .rename(lambda x: x + 1)
-            .style.set_table_styles([{'selector': 'th', 'props': [('text-align', 'left')]}])
-        )
+        if selected_region == "Kõik maakonnad":
+            st.dataframe(
+                merged_data[["MNIMI", "Loomulik iive"]]
+                .rename(columns={"MNIMI": "Maakond"})
+                .sort_values("Maakond")
+                .reset_index(drop=True)
+                .rename(lambda x: x + 1)
+                .style.set_table_styles([{'selector': 'th', 'props': [('text-align', 'left')]}])
+            )
+        else:
+            valitud_rida = merged_data[merged_data["MNIMI"] == selected_region][["MNIMI", "Loomulik iive"]]
+            if not valitud_rida.empty:
+                st.metric(label=f"{valitud_rida.iloc[0, 0]} — Loomulik iive ({gender_option.lower()})", value=int(valitud_rida.iloc[0, 1]))
     with col2:
         region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())
         selected_region = st.selectbox("Vali maakond", region_options, key="region_select")

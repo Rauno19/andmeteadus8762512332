@@ -40,7 +40,7 @@ def get_data_for_year(df, year):
     year_data = df[df.Aasta == year]
     return year_data
 
-def plot(merged_data, year, selected_region=None, cmap_choice='plasma'):
+def plot(merged_data, year, selected_region=None, cmap_choice='plasma', gender_label="Kokku"):
     fig, ax = plt.subplots(figsize=(12, 8))
     vmin = merged_data['Loomulik iive'].min()
     vmax = merged_data['Loomulik iive'].max()
@@ -61,7 +61,7 @@ def plot(merged_data, year, selected_region=None, cmap_choice='plasma'):
         legend_kwds={'label': "Loomulik iive"}
     )
 
-    title = f'Loomulik iive {"maakonnas " + selected_region if selected_region and selected_region != "Kõik maakonnad" else "maakonniti"} aastal {year}'
+    title = f'Loomulik iive ({gender_label.lower()}) {'maakonnas ' + selected_region if selected_region and selected_region != "Kõik maakonnad" else 'maakonniti'} aastal {year}'
     plt.title(title)
     plt.axis('off')
     plt.tight_layout()
@@ -116,7 +116,7 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
 
         cmap_choice = st.selectbox("Vali kaardi värviskeem", ["viridis", "plasma"], index=1, key="cmap_select")
 
-        plot(merged_data, year, selected_region, cmap_choice=cmap_choice)
+        plot(merged_data, year, selected_region, cmap_choice=cmap_choice, gender_label=gender_option)
 
     
 else:

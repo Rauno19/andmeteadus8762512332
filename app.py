@@ -123,13 +123,7 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
             valitud_rida = merged_data[merged_data["MNIMI"] == selected_region][["MNIMI", "Loomulik iive"]]
             if not valitud_rida.empty:
                 st.metric(label=f"{valitud_rida.iloc[0, 0]} — Loomulik iive ({gender_option.lower()})", value=int(valitud_rida.iloc[0, 1]))
-        region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())
-        selected_region = st.selectbox("Vali maakond", region_options, key="region_select")
-
-        cmap_choice = st.selectbox("Vali kaardi värviskeem", ["viridis", "plasma"], index=1, key="cmap_select")
-
-        plot(merged_data, year, selected_region, cmap_choice=cmap_choice, gender_label=gender_option)
-
+        
     
 else:
     st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")

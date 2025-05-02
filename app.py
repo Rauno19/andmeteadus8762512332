@@ -120,10 +120,10 @@ else:
         .rename(columns={"MNIMI": "Maakond"})
         .sort_values("Maakond")
         .reset_index(drop=True)
-        .rename(lambda x: x + 1)
         .style.set_table_styles([{'selector': 'th', 'props': [('text-align', 'left')]}])
+    )
     
 
 
 
-st.caption("Andmeallikas: Statistikaamet"))
+st.caption("Andmeallikas: Statistikaamet")

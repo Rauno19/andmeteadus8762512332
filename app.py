@@ -114,7 +114,7 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
         region_options = ["Kõik maakonnad"] + sorted(merged_data["MNIMI"].unique())
         selected_region = st.selectbox("Vali maakond", region_options, key="region_select")
 
-        cmap_choice = st.selectbox("Vali kaardi värviskeem", ["Viridis", "Plasma"], index=1, key="cmap_select")
+        cmap_choice = st.selectbox("Vali kaardi värviskeem", ["viridis", "plasma"], index=1, key="cmap_select")
 
         plot(merged_data, year, selected_region, cmap_choice=cmap_choice, gender_label=gender_option)
 

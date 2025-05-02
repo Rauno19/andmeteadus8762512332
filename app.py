@@ -61,7 +61,10 @@ def plot(merged_data, year, selected_region=None, cmap_choice='plasma', gender_l
         legend_kwds={'label': "Loomulik iive"}
     )
 
-    title = f'Loomulik iive ({gender_label.lower()}) {'maakonnas ' + selected_region if selected_region and selected_region != "Kõik maakonnad" else 'maakonniti'} aastal {year}'
+        if selected_region and selected_region != "Kõik maakonnad":
+        title = f'Loomulik iive ({gender_label.lower()}) maakonnas {selected_region} aastal {year}'
+    else:
+        title = f'Loomulik iive ({gender_label.lower()}) maakonniti aastal {year}'
     plt.title(title)
     plt.axis('off')
     plt.tight_layout()

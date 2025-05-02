@@ -124,7 +124,6 @@ else:
         .style.set_table_styles([{'selector': 'th', 'props': [('text-align', 'left')]}])
     
 
-else:
-    st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")
 
-st.caption("Andmeallikas: Statistikaamet")
+
+st.caption("Andmeallikas: Statistikaamet"))

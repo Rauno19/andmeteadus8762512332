@@ -105,7 +105,7 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
     cmap_choice = st.selectbox("Vali kaardi värviskeem", ["viridis", "plasma"], index=1, key="cmap_select")
 
     st.subheader("Andmetabel ja kaart")
-col1, col2 = st.columns([1, 2])
+    col1, col2 = st.columns([1, 2])
     with col2:
         plot(merged_data, year, selected_region, cmap_choice=cmap_choice, gender_label=gender_option)
 

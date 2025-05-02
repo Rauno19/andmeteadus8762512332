@@ -73,7 +73,7 @@ def plot(merged_data, year, selected_region=None, cmap_choice='plasma', gender_l
 
     st.pyplot(fig)
 
-st.title("Loomulik iive Eesti maakondades (2014-2023)")
+st.title("Loomulik iive Eesti maakondades aastatel 2014-2023")
 
 with st.spinner("Laen andmeid..."):
     df = import_data()

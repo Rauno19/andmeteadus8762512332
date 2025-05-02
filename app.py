@@ -113,7 +113,7 @@ with col2:
 if selected_region != "Kõik maakonnad":
     valitud_rida = merged_data[merged_data["MNIMI"] == selected_region][["MNIMI", "Loomulik iive"]]
     if not valitud_rida.empty:
-        st.metric(label=f"{valitud_rida.iloc[0, 0]} — Loomulik iive ({gender_option.lower()})", value=int(valitud_rida.iloc[0, 1]))
+        st.metric(label=f"{valitud_rida.iloc[0, 0]} — Loomulik iive ({gender_option.lower(
 else:
     st.dataframe(
         merged_data[["MNIMI", "Loomulik iive"]]

@@ -61,7 +61,7 @@ def plot(merged_data, year, selected_region=None, cmap_choice='plasma', gender_l
         legend_kwds={'label': "Loomulik iive"}
     )
 
-        if selected_region and selected_region != "Kõik maakonnad":
+    if selected_region and selected_region != "Kõik maakonnad":
         title = f'Loomulik iive ({gender_label.lower()}) maakonnas {selected_region} aastal {year}'
     else:
         title = f'Loomulik iive ({gender_label.lower()}) maakonniti aastal {year}'
@@ -86,8 +86,7 @@ st.success("Andmed edukalt laetud!")
 
 year = st.selectbox("Vali aasta", sorted(df["Aasta"].unique()))
 df_year = get_data_for_year(df, year)
-
-# PARANDUS: puhasta Maakonna nimed API andmetes
+df_year = df_year.copy()
 df_year["Maakond"] = df_year["Maakond"].str.replace(" maakond", "", regex=False)
 
 merged_data = gdf.merge(df_year, left_on='MNIMI', right_on='Maakond')
@@ -109,25 +108,18 @@ if "Mehed Loomulik iive" in merged_data.columns and "Naised Loomulik iive" in me
 
     st.subheader("Andmetabel ja kaart")
     col1, col2 = st.columns([1, 2])
+    with col1:
+        st.dataframe(
+            merged_data[["MNIMI", "Loomulik iive"]]
+            .rename(columns={"MNIMI": "Maakond"})
+            .sort_values("Maakond")
+            .reset_index(drop=True)
+            .rename(lambda x: x + 1)
+            .style.set_table_styles([{'selector': 'th', 'props': [('text-align', 'left')]}])
+        )
     with col2:
         plot(merged_data, year, selected_region, cmap_choice=cmap_choice, gender_label=gender_option)
 
-    with col1:
-        if selected_region == "Kõik maakonnad":
-            st.dataframe(
-                merged_data[["MNIMI", "Loomulik iive"]]
-                .rename(columns={"MNIMI": "Maakond"})
-                .sort_values("Maakond")
-                .reset_index(drop=True)
-                .rename(lambda x: x + 1)
-                .style.set_table_styles([{'selector': 'th', 'props': [('text-align', 'left')]}])
-            )
-        else:
-            valitud_rida = merged_data[merged_data["MNIMI"] == selected_region][["MNIMI", "Loomulik iive"]]
-            if not valitud_rida.empty:
-                st.metric(label=f"{valitud_rida.iloc[0, 0]} — Loomulik iive ({gender_option.lower()})", value=int(valitud_rida.iloc[0, 1]))
-        
-    
 else:
     st.error("Puuduvad vajalikud veerud 'Mehed Loomulik iive' ja 'Naised Loomulik iive'.")
 
